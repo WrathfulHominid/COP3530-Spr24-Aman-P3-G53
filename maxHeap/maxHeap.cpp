@@ -6,9 +6,10 @@ using namespace std;
 
 class MaxHeap{
 private:
-    vector<pair<string, int>> heap; // max heap storing song name and num shared playlists.
+    vector<pair<string, int>> heap; // max heap storing ALL song name and num shared playlists.
     int k = 5; // max size of heap;
     int size = 0; // initial size, can change.
+    vector<pair<string, int>> topK; // heap of only top k songs.
 
 public:
     void insertNode(string name, int num){ // insert a song into the heap.
@@ -31,12 +32,12 @@ public:
         }
     }
 
-    pair<string, int> deleteMax(){
+    pair<string, int> deleteMax(){ // remove the root/max element from the heap.
         pair<string, int> max = heap[0];
-        swap(heap[0], heap[heap.size()-1]);
+        swap(heap[0], heap[heap.size()-1]); // swap last element with max.
         size -= 1;
-        heap.pop_back();
-        heapifyDown(0);
+        heap.pop_back(); // delete max
+        heapifyDown(0); // heapify down new root.
         return max;
     }
 
@@ -53,6 +54,10 @@ public:
 
             else if (heap[right].second > heap[parent].second && heap[right].second > heap[left].second){
                 parent = right; // if right is greater than parent and left, swap parent and right.
+            }
+
+            else if (heap[left].second == heap[right].second && heap[left].second > heap[parent].second){
+                parent = left; // if left and right are same size, but still bigger than parent.
             }
         }
 
@@ -72,20 +77,36 @@ public:
         return this->heap;
     }
 
-    vector<pair<string, int>> kthLargest(){
-        vector<pair<string, int>> topK;
-        for (int i=k-1; i>=0; i--){
-            topK.push_back(deleteMax());
+    void kthLargest(){ // creates heap with just top 5 elements.
+        for (int i=k-1; i>=0; i--){ // for the top k elements
+            topK.push_back(deleteMax()); // add to topK heap (already sorted due to nature of heaps).
         }
-
-        return topK;
     }
 
-    map<string, int> getMap(string songName, SongNode& node){
-        node = node.load(songName);
-        node.printSongs();
+    map<string, int> getMap(string songName, SongNode& node){ // gets all common songs.
+        node = SongNode::load(songName);
+//        node.printSongs();
         return node.getSongs();
 
+    }
+
+    void printMap(map<string, int>& songs){ // prints all common songs.
+        for (auto i: songs){
+            cout << i.first << " " << i.second << endl;
+        }
+    }
+
+    void printTopK(){ // prints top k songs.
+        kthLargest();
+        for (auto i: topK){
+            cout << i.first << " " << i.second << endl;
+        }
+    }
+
+    void printHeap(){
+        for (auto i: heap){
+            cout << i.first << " " << i.second << endl;
+        }
     }
 
 };
@@ -97,18 +118,15 @@ int main() {
     MaxHeap max; // class object.
     SongNode song;
 
-    songs = max.getMap("Beauty and A Beat", song);
+    songs = max.getMap("!AST", song);
 
 
-//    for (auto i: songs){ // for every song in my map, insert into the heap.
-//        max.insertNode(i.first, i.second);
-//    }
-//
-//    vector<pair<string, int>> k = max.kthLargest();
-//
-//    for (int i=0; i<k.size(); i++){
-//        cout << k[i].first << " " << k[i].second << endl;
-//    }
+    for (auto i: songs){ // for every song in my map, insert into the heap.
+        SongNode::parseReverse(i.first);
+        max.insertNode(i.first, i.second);
+    }
+
+    max.printTopK();
 
     return 0;
 }
