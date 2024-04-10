@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "../dataFormatting/songnode.cpp"
 using namespace std;
 
 class MaxHeap{
@@ -80,31 +81,34 @@ public:
         return topK;
     }
 
+    map<string, int> getMap(string songName, SongNode& node){
+        node = node.load(songName);
+        node.printSongs();
+        return node.getSongs();
+
+    }
+
 };
 
 int main() {
 
     map<string, int> songs; // for testing.
 
-    songs["a"] = 10;
-    songs["b"] = 15;
-    songs["c"] = 7;
-    songs["d"] = 9;
-    songs["e"] = 27;
-    songs["f"] = 300;
-    songs["g"] = 2;
-
     MaxHeap max; // class object.
+    SongNode song;
 
-    for (auto i: songs){ // for every song in my map, insert into the heap.
-        max.insertNode(i.first, i.second);
-    }
+    songs = max.getMap("Beauty and A Beat", song);
 
-    vector<pair<string, int>> k = max.kthLargest();
 
-    for (int i=0; i<k.size(); i++){
-        cout << k[i].first << " " << k[i].second << endl;
-    }
+//    for (auto i: songs){ // for every song in my map, insert into the heap.
+//        max.insertNode(i.first, i.second);
+//    }
+//
+//    vector<pair<string, int>> k = max.kthLargest();
+//
+//    for (int i=0; i<k.size(); i++){
+//        cout << k[i].first << " " << k[i].second << endl;
+//    }
 
     return 0;
 }

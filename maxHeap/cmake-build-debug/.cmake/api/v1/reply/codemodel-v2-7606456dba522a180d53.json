@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/User/CLionProjects/maxHeap/cmake-build-debug",
-		"source" : "C:/Users/User/CLionProjects/maxHeap"
+		"build" : "C:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap/cmake-build-debug",
+		"source" : "C:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap"
 	},
 	"version" : 
 	{

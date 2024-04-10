@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/User/CLionProjects/maxHeap/cmake-build-debug"
+			"value" : "c:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/User/CLionProjects/maxHeap/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/User/CLionProjects/maxHeap"
+			"value" : "C:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1291,7 +1291,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/User/CLionProjects/maxHeap/cmake-build-debug"
+			"value" : "C:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap/cmake-build-debug"
 		},
 		{
 			"name" : "maxHeap_IS_TOP_LEVEL",
@@ -1315,7 +1315,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/User/CLionProjects/maxHeap"
+			"value" : "C:/Users/User/CLionProjects/COP3530-Spr24-Aman-P3-G53/maxHeap"
 		}
 	],
 	"kind" : "cache",
