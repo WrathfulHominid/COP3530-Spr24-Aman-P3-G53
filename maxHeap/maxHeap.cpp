@@ -99,6 +99,7 @@ public:
     void printTopK(){ // prints top k songs.
         kthLargest();
         for (auto i: topK){
+            SongNode::parseReverse(i.first);
             cout << i.first << " " << i.second << endl;
         }
     }
@@ -109,24 +110,28 @@ public:
         }
     }
 
+    void takeInput(string name){
+
+        map<string, int> songs;
+        SongNode song;
+
+        songs = getMap(name, song);
+
+        for (auto i: songs){ // for every song in my map, insert into the heap.
+            SongNode::parseReverse(i.first);
+            insertNode(i.first, i.second);
+        }
+
+        printTopK();
+    }
+
 };
 
 int main() {
 
-    map<string, int> songs; // for testing.
+    MaxHeap max;
 
-    MaxHeap max; // class object.
-    SongNode song;
-
-    songs = max.getMap("!AST", song);
-
-
-    for (auto i: songs){ // for every song in my map, insert into the heap.
-        SongNode::parseReverse(i.first);
-        max.insertNode(i.first, i.second);
-    }
-
-    max.printTopK();
+    max.takeInput("!AST Consecrate !AST");
 
     return 0;
 }
