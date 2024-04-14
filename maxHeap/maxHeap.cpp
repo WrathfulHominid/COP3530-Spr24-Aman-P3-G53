@@ -99,8 +99,8 @@ public:
     void printTopK(){ // prints top k songs.
         kthLargest();
         for (auto i: topK){
-            SongNode::parseReverse(i.first);
-            cout << i.first << " " << i.second << endl;
+            string name = SongNode::parseReverse(i.first);
+            cout << name << " " << i.second << endl;
         }
     }
 
@@ -131,7 +131,7 @@ int main() {
 
     MaxHeap max;
 
-    max.takeInput("!AST Consecrate !AST");
+    max.takeInput("!AST");
 
     return 0;
 }
