@@ -1,5 +1,5 @@
 '''
-This is an example of how I used the MaxHeap class:
+This is an example of how I used the MaxHeap class: I based this off of your structure. 
 
 rootSong = SongNode.load(name)
 sharedSongs = rootSong.get_songs()
