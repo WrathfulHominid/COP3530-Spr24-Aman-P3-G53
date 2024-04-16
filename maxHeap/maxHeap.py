@@ -29,10 +29,11 @@ class MaxHeap:
         parent = (i - 1) // 2
         child = i
 
-        if self.heap[child][1] > self.heap[parent][1]:
-            self.heap[child], self.heap[parent] = self.heap[parent], self.heap[child]
-
-            self.heapifyUp(parent)
+       if (child > 0):
+            if self.heap[child][1] > self.heap[parent][1]:
+               self.heap[child], self.heap[parent] = self.heap[parent], self.heap[child]
+   
+               self.heapifyUp(parent)
 
     def deleteMax(self):  # deletes and returns max element
         max = self.heap[0]
