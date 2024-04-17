@@ -87,7 +87,7 @@ class MinHeap:
             self.removeMin()
            
     #create json from the 5 songs in the heap to send to frontend
-    def createJson(self):
+    def createJson(self, time):
         songs = []
         
         #get the 5 songs in the minheap and add them to songs[]
@@ -114,9 +114,10 @@ class MinHeap:
         
         '''
         data = {
-            'song_data': {
+            'song_data_min': {
             self.getSongName(): [{song[0]: song[1]} for song in songs]
-            }
+            },
+            'exec_time_min': time
         }
         
         return data;

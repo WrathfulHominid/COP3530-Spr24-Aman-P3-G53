@@ -1,0 +1,32 @@
+.search{
+    position: absolute;  
+    top: 50%;             
+    left: 50%;             
+    transform: translate(-50%, -50%); 
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.bar{
+    width: 50%;    
+    padding: 20px;   
+    font-size: 20px;  
+    border: 2px solid #ccc; 
+    background-color: rgb(255, 255, 255);  
+    border-radius: 10px;
+    text-align: center;
+}
+
+.button{
+    width: 10%;    
+    padding: 20px;   
+    font-size: 20px;  
+    border: 1px solid;
+    background-color: rgba(245, 222, 179, 0.8);   
+    border-radius: 10px;
+    text-align: center;
+}

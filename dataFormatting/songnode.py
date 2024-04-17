@@ -172,11 +172,11 @@ class SongNode :
             #parsed_name = SongNode.parse_name(songname)
             parsed_name = songname
 
-            filepath = "tracks/" + parsed_name + ".csv"
+            filepath = "../tracks/" + parsed_name + ".csv"
 
         elif (True == testing) :
 
-            filepath = songname + ".csv"
+            filepath = "../tracks/" + songname + ".csv"
 
 
         file = open(filepath, mode='r', encoding='utf-8')

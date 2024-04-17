@@ -26,14 +26,13 @@ class MaxHeap:
         self.heapifyUp(self.size - 1)
 
     def heapifyUp(self, i):  # heapify up
-        parent = (i - 1) // 2
-        child = i
-
-       if (child > 0):
-            if self.heap[child][1] > self.heap[parent][1]:
-               self.heap[child], self.heap[parent] = self.heap[parent], self.heap[child]
-   
-               self.heapifyUp(parent)
+        while i > 0:
+            parent = (i - 1) // 2
+            if self.heap[i][1] > self.heap[parent][1]:
+                self.heap[i], self.heap[parent] = self.heap[parent], self.heap[i]
+                i = parent
+            else:
+                break
 
     def deleteMax(self):  # deletes and returns max element
         max = self.heap[0]
@@ -44,27 +43,19 @@ class MaxHeap:
         return max
 
     def heapifyDown(self, i):  # heapify down after deletion
-        parent = i
-        left = 2 * i + 1
-        right = 2 * i + 2
-
-        if (left < self.size) and (right < self.size):
-            if (self.heap[left][1] > self.heap[parent][1]) and (self.heap[left][1] > self.heap[right][1]):
-                parent = left
-
-            elif (self.heap[right][1] > self.heap[parent][1]) and (self.heap[right][1] > self.heap[left][1]):
-                parent = right
-
-            elif (self.heap[left][1] == self.heap[right][1]) and (self.heap[left][1] > self.heap[parent][1]):
-                parent = left
-
-        elif (left < self.size) and (right >= self.size):
-            if (self.heap[left[1]] > self.heap[parent][1]):
-                parent = left
-
-        if parent != i:
-            self.heap[parent], self.heap[i] = self.heap[i], self.heap[parent]
-            self.heapifyDown(parent)
+        while True:
+            largest = i
+            left = 2 * i + 1
+            right = 2 * i + 2
+            if left < len(self.heap) and self.heap[left][1] > self.heap[largest][1]:
+                largest = left
+            if right < len(self.heap) and self.heap[right][1] > self.heap[largest][1]:
+                largest = right
+            if largest != i:
+                self.heap[i], self.heap[largest] = self.heap[largest], self.heap[i]
+                i = largest
+            else:
+                break
 
     def getHeap(self):  # returns full heap
         return self.heap
@@ -73,14 +64,15 @@ class MaxHeap:
         for _ in range(self.k):
             self.topK.append(self.deleteMax())
 
-    def createJson(self): # creates top k max heap and organizes in json.
+    def createJson(self, time): # creates top k max heap and organizes in json.
         self.kthLargest()
         songs = self.topK
 
         data = {
-            'song_data': {
+            'song_data_max': {
                 self.getSongName(): [{song[0]: song[1]} for song in songs]
-            }
+            },
+            'exec_time_max': time
         }
 
         return data
