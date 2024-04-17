@@ -1,0 +1,7 @@
+.background{
+    background-image: url('../assets/topster.jpg');
+    background-size: cover; /* Cover the entire area of the div */
+    background-position: center; /* Center the background image */
+    min-height: 100vh; /* Minimum height to make it visible */
+    width: 100%; /* Full width */
+}
