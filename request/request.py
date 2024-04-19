@@ -18,48 +18,43 @@ CORS(app)
 
 def getJson(song):
     start = timeit.default_timer()
-    for filename in os.listdir(directory_path):
-        if filename.endswith('.csv'):
-            name = filename.replace('.csv', '')
-            if name == song:
-                rootSong = SongNode.load(name)
-                sharedSongs = rootSong.get_songs()
-                playlist = MinHeap(rootSong.get_name(), rootSong.get_artist(), rootSong.get_album())
-                for song, shared in sharedSongs.items():
-                    playlist.insertSong(song, shared)
-                end = timeit.default_timer()
-                time_exec = end - start
-                data = playlist.createJson(time_exec)
-                return data
+    rootSong = SongNode.load(song)
+    sharedSongs = rootSong.get_songs()
+    playlist = MinHeap(rootSong.get_name(), rootSong.get_artist(), rootSong.get_album())
+    for song, shared in sharedSongs.items():
+        playlist.insertSong(song, shared)
+    end = timeit.default_timer()
+    time_exec = end - start
+    data = playlist.createJson(time_exec)
+    return data
             
 def getJson2(song):
     start = timeit.default_timer()
-    for filename in os.listdir(directory_path):
-        if filename.endswith('.csv'):
-            name = filename.replace('.csv', '')
-            if name == song:
-                rootSong = SongNode.load(name)
-                sharedSongs = rootSong.get_songs()
-                maxHeap = MaxHeap(rootSong.get_name(), rootSong.get_artist(), rootSong.get_album())
-                for song, shared in sharedSongs.items():
-                    maxHeap.insertNode(song, shared)
-                end = timeit.default_timer()
-                time_exec = end - start
-                data = maxHeap.createJson(time_exec)
-                return data
+    rootSong = SongNode.load(song)
+    sharedSongs = rootSong.get_songs()
+    maxHeap = MaxHeap(rootSong.get_name(), rootSong.get_artist(), rootSong.get_album())
+    for song, shared in sharedSongs.items():
+        maxHeap.insertNode(song, shared)
+    end = timeit.default_timer()
+    time_exec = end - start
+    data = maxHeap.createJson(time_exec)
+    return data
 
 @app.route('/frontend', methods=['POST'])
 def get_song_data():
     
     data = request.get_json()
     song = data.get('song')
-    song_data = getJson(song)
-    song_data2 = getJson2(song)
     
-    print(song_data)
-    print(song_data2)
+    sn = SongNode()
     
-    return jsonify(song_data, song_data2)
+    song_data = getJson(sn.parse_name(song))
+    song_data2 = getJson2(sn.parse_name(song))
+    
+    if song_data is None:
+        return jsonify({"message": "Song not found"}), 404
+    else:
+        return jsonify(song_data, song_data2)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

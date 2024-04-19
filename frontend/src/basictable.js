@@ -41,6 +41,7 @@ export default function BasicTable({songName, isSub, setIsSub}){
   var songValuesMax = []
   var timeMin;
   var timeMax;
+  var notLoaded;
 
   const [songData, setSongData] = useState(null);
     useEffect(() => {
@@ -53,7 +54,12 @@ export default function BasicTable({songName, isSub, setIsSub}){
     console.log("Loading")
   }
   else{
-    timeMin = songData[0].exec_time_min
+    if(songData.message == "Song not found"){
+      notLoaded = true;
+      console.log(notLoaded)
+    }
+    else{
+      timeMin = songData[0].exec_time_min
     const min = Object.values(songData[0].song_data_min)
     for(var i in min[0]){
       const songObj = min[0][i]
@@ -70,6 +76,7 @@ export default function BasicTable({songName, isSub, setIsSub}){
       const value = songObj[name];
       songNamesMax.push(name)
       songValuesMax.push(value)
+    }
     }
   }
 
@@ -88,57 +95,63 @@ export default function BasicTable({songName, isSub, setIsSub}){
 
   return (
     <Container>
-      {!songData
-      ? <div className="loader-container">
+  {notLoaded ? (
+    <Container><div className='error'><h1>Error: No Song Found</h1></div>
+    <button className='backButton' onClick={handleOnClick}>Return</button></Container>
+  ) : (!songData ? (
+    <div className="loader-container">
       <div className="loader"></div>
     </div>
-      :<div><TableContainer className='tablecont' style={{ width: "100%" }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="center" colSpan={3} style={{ fontSize: '40px', fontWeight: 'bold' }}>
-              Root Song: {songName}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="center" colSpan={3} style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              Min Heap: {timeMin} seconds
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell align="center" style={{ fontSize: '20px', fontWeight: 'bold' }}>Similar Songs</TableCell>
-            <TableCell align="center" style={{ fontSize: '20px', fontWeight: 'bold' }}>Playlists Shared</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {songNamesMin.map((song, index) => (
-            <TableRow hover key={index}>
-              <TableCell align="center">{song}</TableCell>
-              <TableCell align="center">{songValuesMin[index]}</TableCell>
+  ) : (
+    <div>
+      <TableContainer className='tablecont' style={{ width: "100%" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" colSpan={3} style={{ fontSize: '40px', fontWeight: 'bold' }}>
+                Root Song: {songName}
+              </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-        <TableRow>
+            <TableRow>
+              <TableCell align="center" colSpan={3} style={{ fontSize: '20px', fontWeight: 'bold' }}>
+                Min Heap: {timeMin} seconds
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell align="center" style={{ fontSize: '20px', fontWeight: 'bold' }}>Similar Songs</TableCell>
+              <TableCell align="center" style={{ fontSize: '20px', fontWeight: 'bold' }}>Playlists Shared</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {songNamesMin.map((song, index) => (
+              <TableRow hover key={index}>
+                <TableCell align="center">{song}</TableCell>
+                <TableCell align="center">{songValuesMin[index]}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableRow>
             <TableCell align="center" colSpan={3} style={{ fontSize: '20px', fontWeight: 'bold' }}>
               Max Heap: {timeMax} seconds
             </TableCell>
-        </TableRow>
-        <TableRow>
+          </TableRow>
+          <TableRow>
             <TableCell align="center" style={{ fontSize: '20px', fontWeight: 'bold' }}>Similar Songs</TableCell>
             <TableCell align="center" style={{ fontSize: '20px', fontWeight: 'bold' }}>Playlists Shared</TableCell>
-        </TableRow>
-        <TableBody>
-          {songNamesMax.map((song, index) => (
-            <TableRow hover key={index}>
-              <TableCell align="center">{song}</TableCell>
-              <TableCell align="center">{songValuesMax[index]}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    <button className='backButton' onClick={handleOnClick}>Return</button></div>
-      }
-    </Container>
+          </TableRow>
+          <TableBody>
+            {songNamesMax.map((song, index) => (
+              <TableRow hover key={index}>
+                <TableCell align="center">{song}</TableCell>
+                <TableCell align="center">{songValuesMax[index]}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <button className='backButton' onClick={handleOnClick}>Return</button>
+    </div>
+  ))}
+</Container>
   );
 }

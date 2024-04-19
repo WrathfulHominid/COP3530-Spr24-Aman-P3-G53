@@ -1,7 +1,9 @@
-
+import boto3
+import pandas as pd
+from io import StringIO
 import re
-
-
+import os
+import json
 
 class SongNode :
 
@@ -165,59 +167,54 @@ class SongNode :
 
     def read_csv(self, songname, testing = False) :
 
-
-
-        if (False == testing) :
-
-            #parsed_name = SongNode.parse_name(songname)
-            parsed_name = songname
-
-            filepath = "../tracks/" + parsed_name + ".csv"
-
-        elif (True == testing) :
-
-            filepath = "../tracks/" + songname + ".csv"
-
-
-        file = open(filepath, mode='r', encoding='utf-8')
-
-        line = file.readline().strip()
-
-        self._name = songname
+        print("Current working directory:", os.getcwd())
         
-        songs = line.split(',')
+        with open('../config.json', 'r') as config_file:
+            config = json.load(config_file)
 
+        session = boto3.Session(
+            aws_access_key_id=config['aws_access_key_id'],
+            aws_secret_access_key=config['aws_secret_access_key'],
+            region_name=config['region_name']
+        )
 
-        if len(songs) >= 1 :
+        s3 = session.client('s3')
+        client = boto3.client('s3')
+        
+        bucket_name = 'tracksdataset'
+        paginator = s3.get_paginator('list_objects_v2')
+        pages = paginator.paginate(Bucket=bucket_name)
+        objKeys = []
+        
+        found = False
+        
+        for page in pages:
+            for obj in page.get('Contents', []):
+                if(obj["Key"].replace('.csv', '') == songname):
+                    objKeys.append(obj["Key"])
+                    found = True
+                    break
+            if found:
+                break
+        
+        csv_obj = client.get_object(Bucket=bucket_name, Key=objKeys[0])
+        
+        body = csv_obj['Body']
+        csv_string = body.read().decode('utf-8')
 
-            self._artist = songs[0]
-        else :
+        df = pd.DataFrame(StringIO(csv_string))
+
+        columns = list(df)
             
-            self._artist = 'UNKNOWN'
-
+        for i, j in df.iterrows():
+            if(i == 0):
+                continue
+            s = ""
+            for k in columns:
+                s += df[k][i]
+            p = s.split(",")
+            self._shared[p[0]] = int(p[1].replace('\r\n', ''))
         
-        if len(songs) >= 2 :
-
-            self._album = songs[1]
-
-        else :
-
-            self._albums = 'UNKNOWN'
-
-
-        line = file.readline().strip()
-
-
-        while line :
-
-            songs = line.split(',')
-
-            self._shared[ songs[0] ] = int( songs[1] )
-
-            line = file.readline().strip()
-
-        file.close()
-
 
 
     def to_csv(self, filepath = None, testing = False) :
