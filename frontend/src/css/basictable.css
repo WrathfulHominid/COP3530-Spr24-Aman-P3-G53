@@ -42,3 +42,15 @@
     100% { transform: rotate(360deg); }
   }
   
+  .error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0; 
+}
+
+.error h1 {
+    color: red; /* Sets the text color to red */
+    font-size: 150;
+}
